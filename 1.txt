@@ -1,0 +1,7 @@
+1. I/O
+2. Github API
+3. How to access the API itself
+4. how many endpoints in github?
+5. how to work with github API.
+6. Flask server.
+7. learn to build hello world server.
