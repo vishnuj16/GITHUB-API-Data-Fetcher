@@ -46,9 +46,9 @@ data = response.json()
 # Print the retrieved data
 print('\n\n The data retrieved : ')
 
-# for repo in data:
-#     print (repo)
-#     print("\n\n\n")
+for repo in data:
+    print (repo)
+    print("\n\n\n")
 
 dataset = []
 
