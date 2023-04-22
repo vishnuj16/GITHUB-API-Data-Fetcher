@@ -5,7 +5,7 @@ from config import config
 from db import connect
 from db import create_tables
 from db import insert_repos
-from nd import normalize_and_deduplicate
+from nd import normalize_data, deduplicate_data
 from convcsv import writecsv
 from app import web
 from authlib.integrations.requests_client import OAuth2Session
@@ -89,35 +89,38 @@ for item in repos:
         priv = 'Public'
     
     temp = {
-    "Owner ID" : repo['owner']['id'],
-    "Owner Name" : repo['owner']['login'],
-    "Owner Email" : email,
-    "Repo ID" : repo['id'],
-    "Repo Name" : repo['name'],
-    "Status" : priv,
-    "Stars Count": repo['stargazers_count']
+    "owner_id" : repo['owner']['id'],
+    "owner_name" : repo['owner']['login'],
+    "owner_email" : email,
+    "repo_id" : repo['id'],
+    "repo_name" : repo['name'],
+    "repo_status" : priv,
+    "stars_count": repo['stargazers_count']
 }
     temp2 = json.dumps(temp)
     dataset.append(temp2)
 
 
-for info in dataset:
-    print(info)
-    print("\n")
+# for info in dataset:
+#     print(info)
+#     print("\n")
 
+print(dataset)
 
 #connect()
 
-nd_dataset = normalize_and_deduplicate(dataset)
-
 create_tables()
-for info in nd_dataset:
-    json_info = json.dumps(info)
-    insert_repos(json_info)
 
 
-#converting to csv file
-writecsv(dataset)
+# Normalize the JSON data
+normalized_data = [normalize_data(data) for data in dataset]
 
-#open webapp
-web()
+# Deduplicate the normalized data
+deduplicated_data = deduplicate_data(normalized_data)
+print(deduplicated_data ,type(deduplicated_data))
+
+
+# Load the deduplicated data into the PostgreSQL database
+insert_repos(deduplicated_data)
+
+web(deduplicated_data)

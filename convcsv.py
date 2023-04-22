@@ -3,7 +3,7 @@ import json
 
 def writecsv(json_list):
     csv_file = "data.csv"
-    csv_headers = ["Owner ID", "Owner Name", "Owner Email", "Repo ID", "Repo Name", "Status", "Stars Count"]
+    csv_headers = ["owner_id", "owner_name", "owner_email", "repo_id", "repo_name", "repo_status", "stars_count"]
 
     # open the CSV file for writing
     with open(csv_file, mode="w", newline="") as file:
@@ -16,7 +16,7 @@ def writecsv(json_list):
         # write the data from the JSON strings to the CSV file
         for json_string in json_list:
             # parse the JSON string
-            data = json.loads(json_string)
+            # data = json.loads(json_string)
 
             # write the data to the CSV file
-            writer.writerow(data)
+            writer.writerow(json_string)

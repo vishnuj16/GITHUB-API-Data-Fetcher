@@ -36,10 +36,16 @@ def connect():
 
 def create_tables():
     command = """
-        CREATE TABLE repos (
-            id SERIAL PRIMARY KEY,
-            repo_data json
-        );
+        CREATE TABLE IF NOT EXISTS repos (
+        owner_id SERIAL,
+        owner_name TEXT,
+        owner_email TEXT,
+        repo_id bigint,
+        repo_name TEXT,
+        repo_status TEXT,
+        stars_count INTEGER,
+        PRIMARY KEY (repo_id)
+    );
         """
     conn = None
     try:
@@ -60,14 +66,7 @@ def create_tables():
             conn.close()
 
 
-def insert_repos(repo_list):
-
-    json_repo = json.dumps(repo_list)
-    
-    sql = """
-    INSERT INTO repos(repo_data) VALUES(%s)
-    """
-    
+def insert_repos(data_list):
     conn = None
     try:
         # read database configuration
@@ -76,11 +75,12 @@ def insert_repos(repo_list):
         conn = psycopg2.connect(**params)
         # create a new cursor
         cur = conn.cursor()
-        # execute the INSERT statement
-        cur.execute("INSERT INTO repos(repo_data) VALUES(%s)",(json_repo, ))
-        # commit the changes to the database
+        for data in data_list:
+            print("insert into db data : ", data)
+            data_str = json.dumps(data)
+            cur.execute(f"INSERT INTO repos ({','.join(data.keys())}) VALUES ({','.join(['%s']*len(data))})", list(data.values()))
+        # Commit the changes and close the cursor
         conn.commit()
-        # close communication with the database
         cur.close()
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
