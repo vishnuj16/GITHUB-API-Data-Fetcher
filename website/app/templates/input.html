@@ -3,7 +3,7 @@
   <head>
     <title>GitHub Username and Repository Form</title>
     <style>
-      /* Add some basic styling to the form */
+      /* Add some basic styling to the form
       form {
         display: flex;
         flex-direction: column;
@@ -28,7 +28,71 @@
       }
       button:hover {
         background-color: #0062cc;
+      } */
+
+      /* CSS for the GitHub Username and Repository Form */
+      body {
+        background-color: #f9f9f9;
+        font-family: 'Open Sans', sans-serif;
       }
+
+      form {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        margin: 30px auto;
+        max-width: 500px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* added box shadow */
+      }
+
+      button {
+        display: block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      button[type="button"] {
+        background-color: #9b59b6;
+        margin-right: 10px;
+      }
+
+      button[type="submit"] {
+        background-color: #2ecc71;
+      }
+
+      button[type="button"]:hover, button[type="submit"]:hover {
+        opacity: 0.8;
+      }
+
+
+
     </style>
   </head>
   <body>
@@ -37,6 +101,7 @@
       <div id="inputs">
         <label for="username">Username:</label>
         <input type="text" name="username[]" required>
+        <br>
         <label for="repository">Repository:</label>
         <input type="text" name="repository[]" required>
       </div>
