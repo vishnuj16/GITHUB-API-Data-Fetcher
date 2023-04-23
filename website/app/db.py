@@ -1,38 +1,21 @@
 import psycopg2
 import json
-from config import config
+import os
+from pathlib import Path
+import dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+ENV_FILE_PATH = BASE_DIR / ".env"
+dotenv.load_dotenv(ENV_FILE_PATH)
 
 
-def connect():
-    conn = None
-    try:
-        # read connection parameters
-        params = config()
-
-        # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(**params)
-        
-        # create a cursor
-        cur = conn.cursor()
-        
-    # execute a statement
-        print('PostgreSQL database version:')
-        cur.execute('SELECT version()')
-
-        # display the PostgreSQL database server version
-        db_version = cur.fetchone()
-        print(db_version)
-        
-    # close the communication with the PostgreSQL
-        cur.close()
-        
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
+#Parameters for connecting to local PostgresQL server
+params = {
+    'host': os.environ.get('HOSTNAME'),
+    'database' : os.environ.get('DATABASE'),
+    'user' : os.environ.get('USER'),
+    'password' : os.environ.get('PASSWORD')
+}
 
 def create_tables():
     command = """
@@ -50,8 +33,6 @@ def create_tables():
     conn = None
     try:
         # read the connection parameters
-        params = config()
-        # connect to the PostgreSQL server
         conn = psycopg2.connect(**params)
         cur = conn.cursor()
         cur.execute(command)
@@ -69,8 +50,6 @@ def create_tables():
 def insert_repos(data_list):
     conn = None
     try:
-        # read database configuration
-        params = config()
         # connect to the PostgreSQL database
         conn = psycopg2.connect(**params)
         # create a new cursor
