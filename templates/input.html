@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GitHub Username and Repository Form</title>
+    <style>
+      /* Add some basic styling to the form */
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      label {
+        margin: 10px;
+      }
+      input {
+        margin: 10px;
+        padding: 5px;
+        width: 300px;
+      }
+      button {
+        margin: 10px;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0062cc;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>GitHub Username and Repository Form</h1>
+    <form action="{{url_for('submit') }}"  method="POST">
+      <div id="inputs">
+        <label for="username">Username:</label>
+        <input type="text" name="username[]" required>
+        <label for="repository">Repository:</label>
+        <input type="text" name="repository[]" required>
+      </div>
+      <button type="button" id="add-input">Add another input</button>
+      <br>
+      <button type="submit">Submit</button>
+      <input type="hidden" name="access_token" value="{{ access_token }}">
+    </form>
+
+    <script>
+      // Add functionality to add additional inputs
+      const addButton = document.getElementById('add-input');
+      const inputsDiv = document.getElementById('inputs');
+      addButton.addEventListener('click', () => {
+        const usernameInput = document.createElement('input');
+        const repositoryInput = document.createElement('input');
+        usernameInput.type = 'text';
+        usernameInput.name = 'username[]';
+        usernameInput.required = true;
+        repositoryInput.type = 'text';
+        repositoryInput.name = 'repository[]';
+        repositoryInput.required = true;
+        inputsDiv.appendChild(document.createElement('br'));
+        inputsDiv.appendChild(document.createElement('label')).innerText = 'Username:';
+        inputsDiv.appendChild(usernameInput);
+        inputsDiv.appendChild(document.createElement('label')).innerText = 'Repository:';
+        inputsDiv.appendChild(repositoryInput);
+      });
+    </script>
+  </body>
+</html>
